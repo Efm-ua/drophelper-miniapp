@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DropHelper</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .emoji {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .token-amount {
+            font-size: 48px;
+            font-weight: bold;
+            color: #2196F3;
+            margin: 20px 0;
+        }
+
+        .description {
+            color: #666;
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+
+        .special-offer {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .referral-code {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .highlight {
+            color: #1976D2;
+            font-weight: bold;
+        }
+
+        .spots-left {
+            text-align: center;
+            color: #f44336;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .button {
+            display: block;
+            padding: 12px 20px;
+            background: #2196F3;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="notification" class="notification">
+        Link copied!
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="emoji pulse">
+                🎉
+            </div>
+            <h1>Welcome to DropHelper!</h1>
+        </div>
+
+        <div class="content">
+            <div class="token-info">
+                <h2>🎁 Congratulations!</h2>
+                <p>You receive</p>
+                <div id="tokenCounter" class="token-amount">5000</div>
+                <p><strong>Helper tokens</strong> for being one of the first testers!</p>
+            </div>
+
+            <div class="description">
+                DropHelper is your universal personal AI assistant for crypto airdrops,
+                which systematizes routine tasks and helps maximize your rewards.
+            </div>
+
+            <div class="special-offer">
+                <h3>⚡️ Special offer for the first 1000 users:</h3>
+                <ul>
+                    <li>Get 5000 Helper tokens for registration</li>
+                    <li>Additional 1000 tokens for each invited friend</li>
+                    <li>Each invitee also receives 5000 tokens</li>
+                    <li>Early access to all premium features</li>
+                </ul>
+            </div>
+
+            <div id="referralCode" class="referral-code">
+                Your referral code: <span class="highlight">Loading...</span>
+            </div>
+
+            <div id="spotsLeft" class="spots-left pulse">
+                Only <span id="spotsCounter">846</span> spots left!
+            </div>
+
+            <p>You'll soon receive an invitation for early testing of DropHelper.</p>
+
+            <p>Join our community and invite friends:</p>
+
+            <div class="buttons-container">
+                <a href="https://t.me/daodrophelper" id="joinButton" class="button">
+                    Join Community
+                </a>
+                <button onclick="shareWithFriends()" class="button">
+                    Invite Friends
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getUrlParameters() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return {
+                spots: parseInt(urlParams.get('spots')) || 846,
+                tokens: parseInt(urlParams.get('tokens')) || 5000,
+                ref: urlParams.get('ref') || 'REF1229624876',
+                lang: urlParams.get('lang') || 'en'
+            };
+        }
+
+        function updateDisplay() {
+            const params = getUrlParameters();
+            document.getElementById('tokenCounter').textContent = params.tokens.toLocaleString();
+            document.getElementById('spotsCounter').textContent = params.spots.toLocaleString();
+            const refElement = document.querySelector('#referralCode .highlight');
+            refElement.textContent = params.ref;
+            document.getElementById('referralCode').onclick = function () {
+                navigator.clipboard.writeText(params.ref).then(() => {
+                    showNotification();
+                });
+            };
+        }
+
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 2000);
+        }
+
+        function shareWithFriends() {
+            const params = getUrlParameters();
+            const shareText = `Join DropHelper! Get 5000 tokens for free!\nMy referral code: ${params.ref}\nhttps://t.me/AI_DropHelper_bot`;
+
+            if (window.Telegram && window.Telegram.WebApp) {
+                window.Telegram.WebApp.switchInlineQuery(params.ref);
+            } else {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    showNotification();
+                });
+            }
+        }
+
+        // Викликаємо функцію оновлення відразу
+        updateDisplay();
+
+        // Додатково викликаємо після повного завантаження DOM
+        document.addEventListener('DOMContentLoaded', updateDisplay);
+    </script>
+</body>
+
+</html>

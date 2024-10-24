@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0; url=index-ua.html">
+    <script>
+        // Отримуємо параметри з URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const params = window.location.search;
+
+        // Визначаємо мову з параметрів або встановлюємо українську за замовчуванням
+        const lang = urlParams.get('lang') || 'ua';
+
+        // Перенаправляємо на відповідну мовну версію
+        window.location.href = `index-${lang}.html${params}`;
+    </script>
+</head>
+
+<body>
+    <p>Перенаправлення...</p>
+</body>
+
+</html>

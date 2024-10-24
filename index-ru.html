@@ -1,3 +1,4 @@
+<!-- Version 1.0.9 - RU -->
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -6,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DropHelper</title>
     <style>
-        /* Всі стилі такі ж самі як в index-ua.html */
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             margin: 0;
@@ -63,11 +63,16 @@
             border-radius: 8px;
             margin: 20px 0;
             text-align: center;
+            cursor: pointer;
+            word-break: break-all;
         }
 
         .highlight {
             color: #1976D2;
             font-weight: bold;
+            display: block;
+            margin-top: 8px;
+            font-size: 14px;
         }
 
         .spots-left {
@@ -94,6 +99,9 @@
             text-align: center;
             font-weight: bold;
             transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
         }
 
         .button:hover {
@@ -110,6 +118,8 @@
             padding: 10px 20px;
             border-radius: 4px;
             display: none;
+            z-index: 1000;
+            font-size: 14px;
         }
 
         @keyframes pulse {
@@ -158,14 +168,15 @@
                 <h3>⚡️ Специальное предложение для первых 1000 пользователей:</h3>
                 <ul>
                     <li>Получите 5000 токенов Helper за регистрацию</li>
-                    <li>Дополнительно 1000 токенов за каждого приглашённого друга</li>
-                    <li>Каждый приглашённый также получает 5000 токенов</li>
+                    <li>Дополнительно 1000 токенов за каждого приглашенного друга</li>
+                    <li>Каждый приглашенный также получает 5000 токенов</li>
                     <li>Ранний доступ ко всем премиум функциям</li>
                 </ul>
             </div>
 
             <div id="referralCode" class="referral-code">
-                Ваш реферальный код: <span class="highlight">Loading...</span>
+                Ваша реферальная ссылка:<br>
+                <span class="highlight">Loading...</span>
             </div>
 
             <div id="spotsLeft" class="spots-left pulse">
@@ -188,7 +199,6 @@
     </div>
 
     <script>
-        // Весь JavaScript код такий самий як в index-ua.html
         function getUrlParameters() {
             const urlParams = new URLSearchParams(window.location.search);
             return {
@@ -201,12 +211,16 @@
 
         function updateDisplay() {
             const params = getUrlParameters();
+
             document.getElementById('tokenCounter').textContent = params.tokens.toLocaleString();
             document.getElementById('spotsCounter').textContent = params.spots.toLocaleString();
+
+            const refLink = `https://t.me/AI_DropHelper_bot?start=${params.ref}`;
             const refElement = document.querySelector('#referralCode .highlight');
-            refElement.textContent = params.ref;
+            refElement.textContent = refLink;
+
             document.getElementById('referralCode').onclick = function () {
-                navigator.clipboard.writeText(params.ref).then(() => {
+                navigator.clipboard.writeText(refLink).then(() => {
                     showNotification();
                 });
             };
@@ -222,7 +236,8 @@
 
         function shareWithFriends() {
             const params = getUrlParameters();
-            const shareText = `Присоединяйся к DropHelper! Получи 5000 токенов бесплатно!\nМой реферальный код: ${params.ref}\nhttps://t.me/AI_DropHelper_bot`;
+            const refLink = `https://t.me/AI_DropHelper_bot?start=${params.ref}`;
+            const shareText = `Присоединяйся к DropHelper! Получи 5000 токенов бесплатно!\n${refLink}`;
 
             if (window.Telegram && window.Telegram.WebApp) {
                 window.Telegram.WebApp.switchInlineQuery(params.ref);

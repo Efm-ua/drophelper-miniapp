@@ -3,22 +3,28 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=index-ua.html">
+    <meta http-equiv="refresh" content="0; url=index-en.html">
+    <title>DropHelper</title>
     <script>
-        // Отримуємо параметри з URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const params = window.location.search;
+        // Отримуємо мову браузера
+        const userLang = (navigator.language || navigator.userLanguage).toLowerCase();
 
-        // Визначаємо мову з параметрів або встановлюємо українську за замовчуванням
-        const lang = urlParams.get('lang') || 'ua';
+        // Визначаємо відповідну сторінку
+        let redirectPage = 'index-en.html';  // За замовчуванням англійська
 
-        // Перенаправляємо на відповідну мовну версію
-        window.location.href = `index-${lang}.html${params}`;
+        if (userLang.includes('uk') || userLang.includes('ua')) {
+            redirectPage = 'index-ua.html';
+        } else if (userLang.includes('ru')) {
+            redirectPage = 'index-ru.html';
+        }
+
+        // Перенаправляємо на відповідну сторінку
+        window.location.href = redirectPage + window.location.search;
     </script>
 </head>
 
 <body>
-    <p>Перенаправлення...</p>
+    <p>Redirecting to <a href="index-en.html">English version</a>...</p>
 </body>
 
 </html>

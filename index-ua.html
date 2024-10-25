@@ -1,107 +1,155 @@
-<!-- Version 1.0.8 - UA -->
 <!DOCTYPE html>
-<html lang="ua">
+<html lang="uk">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DropHelper</title>
     <style>
+        :root {
+            --primary-color: #2196F3;
+            --primary-dark: #1976D2;
+            --text-color: #333;
+            --bg-color: #f5f5f5;
+            --card-bg: white;
+            --spacing-unit: clamp(16px, 2vw, 24px);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             margin: 0;
-            padding: 20px;
-            background: #f5f5f5;
+            padding: var(--spacing-unit);
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .container {
-            max-width: 600px;
+            max-width: min(600px, 100%);
             margin: 0 auto;
-            background: white;
+            background: var(--card-bg);
             border-radius: 12px;
-            padding: 20px;
+            padding: var(--spacing-unit);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            height: auto;
+            min-height: min-content;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: var(--spacing-unit);
         }
 
         .emoji {
-            font-size: 48px;
-            margin-bottom: 10px;
+            font-size: min(48px, 8vw);
+            margin-bottom: var(--spacing-unit);
+            display: inline-block;
         }
 
         .pulse {
             animation: pulse 2s infinite;
+            animation-timing-function: ease-in-out;
+            transform-origin: center;
+            will-change: transform;
         }
 
         .token-amount {
-            font-size: 48px;
+            font-size: min(48px, 10vw);
             font-weight: bold;
-            color: #2196F3;
-            margin: 20px 0;
+            color: var(--primary-color);
+            margin: var(--spacing-unit) 0;
+            text-align: center;
         }
 
         .description {
             color: #666;
-            line-height: 1.6;
-            margin: 20px 0;
+            margin: var(--spacing-unit) 0;
+            font-size: clamp(14px, 2vw, 16px);
         }
 
         .special-offer {
             background: #f8f9fa;
-            padding: 20px;
+            padding: var(--spacing-unit);
             border-radius: 8px;
-            margin: 20px 0;
+            margin: var(--spacing-unit) 0;
         }
 
         .referral-code {
             background: #e3f2fd;
-            padding: 15px;
+            padding: var(--spacing-unit);
             border-radius: 8px;
-            margin: 20px 0;
+            margin: var(--spacing-unit) 0;
             text-align: center;
             cursor: pointer;
+            word-break: break-all;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+
+        .referral-code:hover {
+            background: #bbdefb;
         }
 
         .highlight {
-            color: #1976D2;
+            color: var(--primary-color);
             font-weight: bold;
+            display: block;
+            margin-top: 8px;
+            font-size: clamp(12px, 1.5vw, 14px);
+            word-break: break-all;
         }
 
         .spots-left {
             text-align: center;
             color: #f44336;
             font-weight: bold;
-            margin: 20px 0;
+            margin: var(--spacing-unit) 0;
+            font-size: clamp(14px, 2vw, 16px);
         }
 
         .buttons-container {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
+            gap: var(--spacing-unit);
+            margin-top: var(--spacing-unit);
         }
 
         .button {
             display: block;
-            padding: 12px 20px;
-            background: #2196F3;
+            padding: clamp(12px, 2vw, 16px) clamp(16px, 3vw, 24px);
+            background: var(--primary-color);
             color: white;
             text-decoration: none;
             border-radius: 6px;
             text-align: center;
             font-weight: bold;
-            transition: background 0.3s;
+            transition: background 0.3s ease, transform 0.2s ease;
             border: none;
             cursor: pointer;
-            font-size: 16px;
+            font-size: clamp(14px, 2vw, 16px);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .button:hover {
-            background: #1976D2;
+            background: var(--primary-dark);
+        }
+
+        .button:active {
+            transform: scale(0.98);
         }
 
         .notification {
@@ -115,6 +163,18 @@
             border-radius: 4px;
             display: none;
             z-index: 1000;
+            font-size: clamp(12px, 1.5vw, 14px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        ul {
+            list-style-position: inside;
+            padding-left: calc(var(--spacing-unit) / 2);
+        }
+
+        li {
+            margin-bottom: calc(var(--spacing-unit) / 2);
+            font-size: clamp(14px, 2vw, 16px);
         }
 
         @keyframes pulse {
@@ -128,6 +188,69 @@
 
             100% {
                 transform: scale(1);
+            }
+        }
+
+        @media (max-width: 380px) {
+            :root {
+                --spacing-unit: 12px;
+            }
+
+            body {
+                padding: 12px;
+            }
+
+            .container {
+                padding: 16px;
+                border-radius: 8px;
+            }
+
+            .button {
+                padding: 10px 16px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .button:hover {
+                transform: translateY(-1px);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .pulse {
+                animation: none;
+            }
+
+            .button {
+                transition: background 0.3s ease;
+            }
+
+            .button:active {
+                transform: none;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --text-color: #e0e0e0;
+                --bg-color: #121212;
+                --card-bg: #1e1e1e;
+            }
+
+            .special-offer {
+                background: #262626;
+            }
+
+            .referral-code {
+                background: #1a2733;
+            }
+
+            .referral-code:hover {
+                background: #1d3043;
+            }
+
+            .description {
+                color: #a0a0a0;
             }
         }
     </style>
@@ -170,7 +293,8 @@
             </div>
 
             <div id="referralCode" class="referral-code">
-                Ваш реферальний код: <span class="highlight">Loading...</span>
+                Ваше реферальне посилання:<br>
+                <span class="highlight">Loading...</span>
             </div>
 
             <div id="spotsLeft" class="spots-left pulse">
@@ -204,29 +328,46 @@
             };
         }
 
-        // Функція для оновлення відображення даних
+        // Функція для плавного оновлення чисел
+        function animateValue(element, start, end, duration) {
+            if (start === end) return;
+            const range = end - start;
+            const increment = end > start ? 1 : -1;
+            const stepTime = Math.abs(Math.floor(duration / range));
+            let current = start;
+            const timer = setInterval(() => {
+                current += increment;
+                element.textContent = current.toLocaleString();
+                if (current === end) {
+                    clearInterval(timer);
+                }
+            }, stepTime);
+        }
+
+        // Функція для оновлення відображення
         function updateDisplay() {
             const params = getUrlParameters();
+            const tokenCounter = document.getElementById('tokenCounter');
+            const spotsCounter = document.getElementById('spotsCounter');
 
-            // Оновлюємо токени
-            document.getElementById('tokenCounter').textContent = params.tokens.toLocaleString();
+            // Плавно оновлюємо значення
+            animateValue(tokenCounter, 0, params.tokens, 1000);
+            animateValue(spotsCounter, 1000, params.spots, 1000);
 
-            // Оновлюємо кількість місць
-            document.getElementById('spotsCounter').textContent = params.spots.toLocaleString();
-
-            // Оновлюємо реферальний код
+            // Оновлюємо реферальне посилання
             const refElement = document.querySelector('#referralCode .highlight');
-            refElement.textContent = params.ref;
+            const refLink = `https://t.me/AI_DropHelper_bot?start=${params.ref}`;
+            refElement.textContent = refLink;
 
-            // Робимо реферальний код клікабельним для копіювання
+            // Налаштовуємо копіювання при кліку
             document.getElementById('referralCode').onclick = function () {
-                navigator.clipboard.writeText(params.ref).then(() => {
+                navigator.clipboard.writeText(refLink).then(() => {
                     showNotification();
                 });
             };
         }
 
-        // Функція для показу повідомлення про копіювання
+        // Функція для показу повідомлення
         function showNotification() {
             const notification = document.getElementById('notification');
             notification.style.display = 'block';
@@ -235,22 +376,22 @@
             }, 2000);
         }
 
-        // Функція для шерінгу з друзями
+        // Функція для шерінгу
         function shareWithFriends() {
             const params = getUrlParameters();
-            const shareText = `Приєднуйся до DropHelper! Отримай 5000 токенів безкоштовно!\nМій реферальний код: ${params.ref}\nhttps://t.me/AI_DropHelper_bot`;
+            const refLink = `https://t.me/AI_DropHelper_bot?start=${params.ref}`;
+            const shareText = `Приєднуйся до DropHelper! Отримай 5000 токенів безкоштовно!\n${refLink}`;
 
             if (window.Telegram && window.Telegram.WebApp) {
                 window.Telegram.WebApp.switchInlineQuery(params.ref);
             } else {
-                // Fallback для браузера
                 navigator.clipboard.writeText(shareText).then(() => {
                     showNotification();
                 });
             }
         }
 
-        // Запускаємо оновлення дисплею при завантаженні сторінки
+        // Запускаємо оновлення при завантаженні
         document.addEventListener('DOMContentLoaded', updateDisplay);
     </script>
 </body>
